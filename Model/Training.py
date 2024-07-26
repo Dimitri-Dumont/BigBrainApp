@@ -10,13 +10,16 @@ import glob
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
-
+import pandas as pd
 import subprocess
 
-train_image_dir = r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\train\images'
-train_label_dir=r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\train\labels'
-val_image_dir = r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\valid\images'
-val_label_dir=r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\valid\labels'
+relative_path = os.path.join('DataSet', 'TumorDetectionYolov8', 'OD8', 'Brain Tumor Detection')
+path = os.path.join(os.getcwd(), relative_path)
+
+train_image_dir = os.path.join(path, 'train', 'images')
+train_label_dir = os.path.join(path, 'train', 'labels')
+val_image_dir = os.path.join(path, 'valid', 'images')
+val_label_dir = os.path.join(path, 'valid', 'labels')
 
 #Check the dataset so that all the images have a corresponding label in the expected format. 
 
@@ -51,7 +54,9 @@ def check_dataset_structure1(images_path, labels_path):
     print("Dataset structure is correct.")
 
 # Load data.yaml configuration file 
-with open(r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\data.yaml', 'r') as file:
+os.path.join(os.getcwd(), 'DataSet', 'TumorDetectionYolov8', 'OD8', 'Brain Tumor Detection', 'data.yaml')
+
+with open(os.path.join(os.getcwd(), 'DataSet', 'TumorDetectionYolov8', 'OD8', 'Brain Tumor Detection', 'data.yaml'), 'r') as file:
     data_config = yaml.safe_load(file)
 
 print(f"Number of classes: {data_config['nc']}")
