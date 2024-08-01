@@ -1,0 +1,8 @@
+# data.yaml
+train: "/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
+val: "/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/valid/images"
+test: "/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/test/images"
+
+
+nc: 3
+names: ['label0', 'label1', 'label2']
