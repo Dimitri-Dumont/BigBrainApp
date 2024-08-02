@@ -29,6 +29,6 @@ UI/venv
 UI/node_modules
 Model/myvenv
 DataSet/env
-DataSet/Tumor*
+DataSet/TumorDetectionYolov8
 DataSet/Brain*
 
