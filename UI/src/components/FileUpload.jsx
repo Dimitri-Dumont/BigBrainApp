@@ -11,7 +11,7 @@ const FileUpload = () => {
     const formData = new FormData();
     formData.append('file', file);
 
-    axios.post('http://localhost:8000/upload', formData, {
+    axios.post('https://api-service-dot-eloquent-env-430802-s8.uw.r.appspot.com/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
