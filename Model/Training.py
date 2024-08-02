@@ -12,13 +12,17 @@ import torch.nn as nn
 from ultralytics import YOLO
 
 class BrainTumorDataset(Dataset):
-    def __init__(self, image_dir, label_dir, transform=None):
+    def __init__(self, image_dir, label_dir, transform=None, limit=50):
         self.image_paths = sorted(glob.glob(os.path.join(image_dir, '*.jpg')))
         self.label_paths = sorted(glob.glob(os.path.join(label_dir, '*.txt')))
         self.transform = transform
-
+        self.image_paths = self.image_paths[:limit]
+        self.label_paths = self.label_paths[:limit]
+        print(f"---------> {image_dir}")
         assert len(self.image_paths) == len(self.label_paths), \
             f"Number of images ({len(self.image_paths)}) and labels ({len(self.label_paths)}) do not match."
+        assert len(self.image_paths) != 0, \
+            f"EMPTY"
 
     def __len__(self):
         return len(self.image_paths)
@@ -27,16 +31,21 @@ class BrainTumorDataset(Dataset):
         image_path = self.image_paths[idx]
         label_path = self.label_paths[idx]
 
+        # Ensure the image is correctly loaded
         image = Image.open(image_path).convert('RGB')
         if self.transform:
             image = self.transform(image)
 
+        # Read and process label file
         with open(label_path, 'r') as f:
             labels = f.readlines()
+
+        # Convert labels to tensor
         labels = [list(map(float, label.strip().split())) for label in labels]
         labels = torch.tensor(labels, dtype=torch.float32)
         
         return image, labels
+
 
 def custom_collate_function(batch):
     images, labels = zip(*batch)
@@ -54,12 +63,20 @@ def custom_collate_function(batch):
 
     return images, padded_labels
 
+print("Hellllllllo")
 # Paths
-train_image_dir = r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\train\images'
-train_label_dir = r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\train\labels'
-val_image_dir = r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\valid\images'
-val_label_dir = r'C:\Users\mthiruma\OneDrive - Siemens Healthineers\Personal\2024\Learning\University of San Diego\AAI-501\Final Project\archive\TumorDetectionYolov8\OD8\Brain Tumor Detection\valid\labels'
+relative_path = os.path.join('DataSet', 'TumorDetectionYolov8', 'OD8', 'Brain Tumor Detection')
+path = os.path.join(os.getcwd(), relative_path)
 
+train_image_dir = os.path.join(path, 'train', 'images')
+train_label_dir = os.path.join(path, 'train', 'labels')
+val_image_dir = os.path.join(path, 'valid', 'images')
+val_label_dir = os.path.join(path, 'valid', 'labels')
+
+train_image_dir = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
+train_label_dir = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/labels"
+val_image_dir = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/valid/images"
+val_label_dir = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/valid/labels"
 # Transforms
 transform = transforms.Compose([
     transforms.ToTensor()
@@ -68,7 +85,7 @@ transform = transforms.Compose([
 # Datasets and DataLoaders
 train_dataset = BrainTumorDataset(train_image_dir, train_label_dir, transform=transform)
 valid_dataset = BrainTumorDataset(val_image_dir, val_label_dir, transform=transform)
-
+print(f"---------->{train_dataset.__len__()}")
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True, collate_fn=custom_collate_function)
 valid_loader = DataLoader(valid_dataset, batch_size=16, shuffle=False, collate_fn=custom_collate_function)
 
@@ -79,10 +96,13 @@ for batch in train_loader:
     break
 
 # Model initialization 
-model_path = 'C:\\Users\\mthiruma\\OneDrive - Siemens Healthineers\\Personal\\2024\\Learning\\University of San Diego\\AAI-501\\Final Project\\yolov8.yaml'
-data_path = 'C:\\Users\\mthiruma\\OneDrive - Siemens Healthineers\\Personal\\2024\\Learning\\University of San Diego\\AAI-501\\Final Project\\data.yaml'
-# Model initialization using the pre-trained model
-pretrained_model_path = 'C:\\Users\\mthiruma\\OneDrive - Siemens Healthineers\\Personal\\2024\\Learning\\University of San Diego\\AAI-501\\Final Project\\yolov8n.pt'  
+model_path = os.path.join(os.getcwd(), "DataSet", "yolov8n.yaml")
+data_path = os.path.join(os.getcwd(), "DataSet", "data.yaml")
+pretrained_model_path = os.path.join(os.getcwd(), "DataSet", "yolov8n.pt")
+# model_path = 'C:\\Users\\mthiruma\\OneDrive - Siemens Healthineers\\Personal\\2024\\Learning\\University of San Diego\\AAI-501\\Final Project\\yolov8.yaml'
+# data_path = 'C:\\Users\\mthiruma\\OneDrive - Siemens Healthineers\\Personal\\2024\\Learning\\University of San Diego\\AAI-501\\Final Project\\data.yaml'
+# # Model initialization using the pre-trained model
+# pretrained_model_path = 'C:\\Users\\mthiruma\\OneDrive - Siemens Healthineers\\Personal\\2024\\Learning\\University of San Diego\\AAI-501\\Final Project\\yolov8n.pt'  
 
 # Training loop
 epochs = 50
