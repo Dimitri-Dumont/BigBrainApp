@@ -1,0 +1,8 @@
+# data.yaml
+train: "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
+val: "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/valid/images"
+test: "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/test/images"
+
+
+nc: 3
+names: ['label0', 'label1', 'label2']
