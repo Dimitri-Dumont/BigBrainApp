@@ -42,28 +42,33 @@ def custom_collate_function(batch):
     return images, padded_labels
 
 
-img_dir = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
-label_dir ="/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/labels"
-pt_path = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/yolov8n.pt"
-yaml_p = "/Users/dimitridumont/code/skool/501/AAI-501/DataSet/data.yaml"
+img_dir = "/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
+label_dir ="/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/labels"
+pt_path = "/content/runs/detect/train7/weights/best.pt"
+yaml_p = "/content/data_g.yaml"
 
 # Load configuration from YAML file
 with open(yaml_p, 'r') as file:
     data_config = yaml.safe_load(file)
 
+transform = transforms.Compose([
+    transforms.Resize((640, 640)),  # Resize the images to the required dimensions
+    transforms.ToTensor()           # Convert the images to tensors
+])
+
 # Dataset and DataLoader
 train_dataset = BrainTumorDataset(
     image_dir=img_dir,
     label_dir=label_dir,
-    transform=transforms.ToTensor()
+    transform=transform
 )
-train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True, num_workers=4, collate_fn=custom_collate_function)
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4, collate_fn=custom_collate_function)
 
 # Model initialization
 if torch.cuda.is_available():
     device = torch.device('cuda')
 elif torch.backends.mps.is_available():
-    device = torch.device('mps') # Apple silicon gpu
+    device = torch.device('mps')
 else:
     device = torch.device('cpu')
 
@@ -76,38 +81,18 @@ model.model.model[-1].nc = data_config['nc']
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 scaler = GradScaler()
 
-# Number of epochs to train the model
-epochs = 3
-
-for epoch in range(epochs):
-    model.train(
-        data=yaml_p,      # Path to the YAML configuration file
-        epochs=epochs,    # Explicitly set the number of epochs (should be the remaining epochs)
-        batch=8,          # Batch size
-        imgsz=640         # Image size (resolution)
-    )
+# Training loop
+epochs = 50
+model.train(
+    data=yaml_p,
+    epochs=epochs,  # Explicitly set the number of epochs to 50
+    batch=32,
+    imgsz=640
+)
     
-    for images, labels in train_loader:
-        # Move images and labels to the specified device (CPU or GPU)
-        images, labels = images.to(device), labels.to(device)
-        # Zero the parameter gradients to prepare for the next pass
-        optimizer.zero_grad()
-        # Forward pass: compute predicted outputs by passing inputs to the model
-        outputs = model(images)
-        # Compute the loss based on model outputs and actual labels
-        loss = model.loss(outputs, labels)
-        # Backward pass: compute gradient of the loss with respect to model parameters
-        scaler.scale(loss).backward()
-        # Perform a single optimization step (parameter update)
-        scaler.step(optimizer)
-        # Update the scale for the next iteration
-        scaler.update()
-        print(f'Epoch {epoch + 1}, Loss: {loss.item()}')
-    
-    # Save model checkpoint every 5 epochs
-    if epoch % 5 == 0:
-        torch.save(model.state_dict(), f'checkpoint_epoch_{epoch}.pt')
-
+  
 # Model validation
 results = model.val(data=yaml_p, device=device)
 print(results)
+model.export(format='onnx')
+
