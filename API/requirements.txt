@@ -4,3 +4,6 @@ pillow
 opencv-python
 ultralytics
 numpy
+python-multipart
+starlette
+torch
