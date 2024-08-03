@@ -6,7 +6,7 @@
             "name": "Python: FastAPI",
             "type": "python",
             "request": "launch",
-            "program": "API/main.py",  // Adjust to your entry script
+            "program": "API/main.py",  
             "console": "integratedTerminal",
             "env": {
                 "PYTHONPATH": "{Replace with your path to venv}/bin/python"
