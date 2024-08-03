@@ -42,10 +42,10 @@ def custom_collate_function(batch):
     return images, padded_labels
 
 
-img_dir = "/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
-label_dir ="/content/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/labels"
-pt_path = "/content/runs/detect/train7/weights/best.pt"
-yaml_p = "/content/data_g.yaml"
+img_dir = "../DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
+label_dir ="../DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/labels"
+pt_path = "../DataSet/runs/detect/train8/weights/best.pt"
+yaml_p = "../DataSet/data.yaml"
 
 # Load configuration from YAML file
 with open(yaml_p, 'r') as file:
@@ -79,7 +79,6 @@ model.model.model[-1].nc = data_config['nc']
 
 # Optimizer and scaler
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-scaler = GradScaler()
 
 # Training loop
 epochs = 50
@@ -90,7 +89,6 @@ model.train(
     imgsz=640
 )
     
-  
 # Model validation
 results = model.val(data=yaml_p, device=device)
 print(results)
