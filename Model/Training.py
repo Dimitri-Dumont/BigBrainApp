@@ -63,7 +63,6 @@ def custom_collate_function(batch):
 
     return images, padded_labels
 
-print("Hellllllllo")
 # Paths
 relative_path = os.path.join('DataSet', 'TumorDetectionYolov8', 'OD8', 'Brain Tumor Detection')
 path = os.path.join(os.getcwd(), relative_path)
