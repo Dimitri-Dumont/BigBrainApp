@@ -8,3 +8,9 @@ torch
 torchvision
 transformers
 ultralytics
+pillow
+yaml
+cv2
+keras
+flask
+uvicorn
