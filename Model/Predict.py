@@ -102,10 +102,10 @@ for image_path in image_paths:
         # Convert image back to BGR for displaying with OpenCV (if necessary)
         img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
-        # Display the image with bounding boxes using matplotlib
-        plt.imshow(cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB))
-        plt.axis('off')
-        plt.show()        
+        # # Display the image with bounding boxes using matplotlib
+        # plt.imshow(cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB))
+        # plt.axis('off')
+        # plt.show()        
 
 # Print the result
 print(f"Total images processed: {total_images}")
