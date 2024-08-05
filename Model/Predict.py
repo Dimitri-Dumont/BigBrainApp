@@ -5,14 +5,20 @@ import cv2
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
 
-# Load the YOLO model
-model = YOLO("best_11.pt")
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# Load the latest weights
+model = YOLO("../detect/train8/weights/best.pt")
+if torch.cuda.is_available():
+    device = torch.device('cuda')
+elif torch.backends.mps.is_available():
+    device = torch.device('mps') # Apple silicon gpu
+else:
+    device = torch.device('cpu')
+
 model = model.to(device)
 
 # Path to the folder containing the images
-image_folder = '/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/test/images'
-annotation_folder = '/Users/dimitridumont/code/skool/501/AAI-501/DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/test/labels'  # Adjust path if necessary
+image_folder = '../DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/test/images'
+annotation_folder = '../DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/test/labels'  # Adjust path if necessary
 
 # Get a list of all image files in the folder
 image_paths = glob.glob(os.path.join(image_folder, '*.jpg'))  # Adjust the extension if needed
@@ -89,21 +95,17 @@ for image_path in image_paths:
 
         for (px1, py1, px2, py2) in predicted_boxes:
             if overlap_found:
-                cv2.rectangle(img, (px1, py1), (px2, py2), (255, 0, 255), 2)  # Purple box for match
+                cv2.rectangle(img, (px1, py1), (px2, py2), (255, 0, 255), 2)  # Purple box  Exact match
             else:
-                cv2.rectangle(img, (px1, py1), (px2, py2), (0, 0, 255), 2)  # Red box for no match
+                cv2.rectangle(img, (px1, py1), (px2, py2), (0, 0, 255), 2)  # Blue box for partial match
 
         # Convert image back to BGR for displaying with OpenCV (if necessary)
         img_bgr = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
-        # Display the image with bounding boxes using matplotlib
-        plt.imshow(cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB))
-        plt.axis('off')
-        plt.show()
-
-        # Optionally, save the image with bounding boxes
-        output_path = os.path.join('/mnt/data/processed_images', os.path.basename(image_path))
-        cv2.imwrite(output_path, img_bgr)
+        # # Display the image with bounding boxes using matplotlib
+        # plt.imshow(cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB))
+        # plt.axis('off')
+        # plt.show()        
 
 # Print the result
 print(f"Total images processed: {total_images}")

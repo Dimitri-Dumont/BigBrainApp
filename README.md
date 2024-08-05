@@ -1,57 +1,16 @@
 # AAI-501
 
-## Super Cool Project
+## Brain Tumor Detection Project Overview
+
+Our Brain Tumor Detection project focuses on leveraging advanced deep learning techniques to accurately identify and classify brain tumors from MRI images. We trained our model using two powerful model architectures: YOLOv8 for object detection and ResNet50 for image classification. Through extensive training and optimization, we achieved a mean Average Precision (mAP) at IoU=0.50 (mAP50) of approximately 0.79 and a mAP across IoU thresholds from 0.50 to 0.95 (mAP50-95) of about 0.52.
+
+To make our model accessible and easy to use, we have deployed the model API to Google Cloud Run, ensuring scalability and reliability. Additionally, we have set up a simple web interface for users to interact with our model, which can be accessed [here](https://ui-service-dot-eloquent-env-430802-s8.uw.r.appspot.com/).
+
+This project hopes to represents the possibilities in the application of AI for medical diagnostics, providing a robust tool for healthcare professionals to assist in the early detection and treatment of brain tumors.
 
 ### Contributors:
 Dimitri Dumont
 
 Gurleen Virk
 
-Mythreyi
-
-## Hello, here's how to run the web interface locally on your machine
-
-## Running web User interface:
-
-
-## Launch backend server 
-
-Open command line and cd to `API` folder create virtual env
-
-```$ python3.10 -m venv venv```
-
-Activate environment
-```source venv/bin/activate```
-
-install dependencies by running:
-
-``` pip install -r requirements.txt ```
-
-Launch API server hosted locally at `http://localhost:8000` by running:
-
-```python main.py```
-
-## launch frontend Server
-
-
-install node.js on your machine by command line or prebuilt installers here -> https://nodejs.org/en/download/package-manager
-
-Open command line and cd to `UI` folder 
-
-
-install dependencies by running:
-
-```npm install```
-
-Run front end application:
-
-```npm run start ```
-
-This should launch a browser window with the application
-
-Upload jpeg of your choosing and a black and white version should appear on the web page
-Once model training is complete we can have this image be labeled with predicted tumor and tumor location. 
-
-
-![Alt Text](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNWNlNnVhYzJveXY2djljeWV3NTcxeG5hZG5iNTExNmlkb3J5OGFmdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YbXLZ6dymH758xSEbM/giphy.gif) ![Alt Text](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2duNnlsazQ1bmpuaGUxcjR1amluZzNvc3FhNGp3eWZiYnVjNnlicyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bJ4TVNYNUympPgcpem/giphy.gif)
-
+Mythreyi Thirumalai

@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    // This is the launch file used to debug local running instance of api
+    "configurations": [
+        {
+            "name": "Python: FastAPI",
+            "type": "python",
+            "request": "launch",
+            "program": "API/main.py",  
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "{Replace with your path to venv}/bin/python"
+            },
+            "args": [
+                "run",
+                "--host=0.0.0.0",
+                "--port=8000"
+            ],
+            "justMyCode": true
+        }
+    ]
+}
