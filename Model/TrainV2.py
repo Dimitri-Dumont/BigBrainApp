@@ -44,7 +44,7 @@ def custom_collate_function(batch):
 
 img_dir = "../DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/images"
 label_dir ="../DataSet/TumorDetectionYolov8/OD8/Brain Tumor Detection/train/labels"
-pt_path = "../DataSet/runs/detect/train8/weights/best.pt"
+pt_path = "../detect/train8/weights/best.pt"
 yaml_p = "../DataSet/data.yaml"
 
 # Load configuration from YAML file
@@ -62,7 +62,7 @@ train_dataset = BrainTumorDataset(
     label_dir=label_dir,
     transform=transform
 )
-train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4, collate_fn=custom_collate_function)
+train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True, num_workers=4, collate_fn=custom_collate_function)
 
 # Model initialization
 if torch.cuda.is_available():
@@ -81,11 +81,11 @@ model.model.model[-1].nc = data_config['nc']
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training loop
-epochs = 50
+epochs = 1
 model.train(
     data=yaml_p,
     epochs=epochs,  # Explicitly set the number of epochs to 50
-    batch=32,
+    batch=8,
     imgsz=640
 )
     
