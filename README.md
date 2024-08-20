@@ -6,7 +6,7 @@ Our Brain Tumor Detection project focuses on leveraging advanced deep learning t
 
 To make our model accessible and easy to use, we have deployed the model API to Google Cloud Run, ensuring scalability and reliability. Additionally, we have set up a simple web interface for users to interact with our model, which can be accessed [here](https://ui-service-dot-eloquent-env-430802-s8.uw.r.appspot.com/).
 
-This project hopes to represents the possibilities in the application of AI for medical diagnostics, providing a robust tool for healthcare professionals to assist in the early detection and treatment of brain tumors.
+This project hopes to represents the possibilities in the application of AI for medical diagnostics, providing a robust tool for healthcare professionals to assist in the early detection and treatment of brain tumors!
 
 ### Contributors:
 Dimitri Dumont
